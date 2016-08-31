@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<mvc:annotation-driven /> 
+	<context:component-scan base-package="com.mana.*" />
+
+	<!-- -->
+    <bean id="c3p0" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost/shortlink_visit"/>
+        <property name="user" value="root"/>
+        <property name="password" value="root"/>
+        <property name="initialPoolSize" value="5" />
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="10" />
+		<property name="acquireIncrement" value="5" />
+		<property name="numHelperThreads" value="1" />
+		<property name="maxIdleTime" value="1800" />
+		<property name="maxStatements" value="30" />
+		<property name="maxStatementsPerConnection" value="100" />
+		<property name="acquireRetryAttempts" value="5" />
+		<property name="idleConnectionTestPeriod" value="3000" />
+		<property name="testConnectionOnCheckout" value="false" />
+    </bean>
+    
+    <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="c3p0"/>
+    </bean>
+    
+    
+    <!-- mybatis配置文件，扫描所有的mapper文件，设置别名为类的简单名称 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <property name="mapperLocations" value="classpath*:mapper/*Mapper.xml"></property>
+        <property name="typeAliasesPackage" value="com.mana.redisCache.model"/>
+    </bean>
+    
+    <!-- spring与mybatis整合，扫描所有的mapper -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.mana.*.mapper"/>
+    </bean>
+    
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="edit*" propagation="REQUIRED"/>
+            <tx:method name="remove*" propagation="REQUIRED"/>
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="*paging*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="*" propagation="SUPPORTS"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:advisor advice-ref="txAdvice" pointcut="@within(org.springframework.stereotype.Controller)"/>
+    </aop:config>
+    
+    <import resource="classpath:redis/redis-context.xml"/>
+    
+</beans>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service name="HelloServiceNew">
+	<description>WebServiec example</description>
+	<parameter name="ServiceObjectSupplier">org.apache.axis2.extensions.spring.receivers.SpringServletContextObjectSupplier</parameter>
+	<parameter name = "SpringBeanName">SayHelloService</parameter>
+	<messageReceivers>
+		<messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out" class="org.apache.axis2.rpc.receivers.RPCMessageReceiver">
+		</messageReceiver>
+		<messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-only" class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver">
+		</messageReceiver>
+	</MessageReceivers>
+	<operation name="sayHelloNew">  
+            <messageReceiver class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver" />  
+     </operation> 
+     <operation name="sayHelloToPersonNew">  
+            <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />  
+     </operation> 
+     <operation name="updateData">  
+            <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />  
+     </operation> 
+</service>
