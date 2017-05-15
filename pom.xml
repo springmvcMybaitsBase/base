@@ -196,7 +196,7 @@
         <dependency>
             <groupId>com.baidu</groupId>
             <artifactId>ueditor</artifactId>
-            <version>1.1.2</version>
+            <version>1.1.1</version>
          </dependency>
          <dependency>
 			<groupId>org.json</groupId>
@@ -430,6 +430,14 @@
 			<version>1.6.2</version>
 		</dependency>
 		<!-- axis2 -->
+		
+		
+		<dependency>
+     		<groupId>com.enterprisedt</groupId>
+     		<artifactId>edtFTPj</artifactId>
+     		<version>1.5.3</version>
+		</dependency>
+		
         
     </dependencies>
 	<build>
