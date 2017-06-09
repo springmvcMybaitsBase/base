@@ -15,7 +15,7 @@
 	<!-- -->
     <bean id="c3p0" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://localhost/shortlink_visit"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost/test"/>
         <property name="user" value="root"/>
         <property name="password" value="root"/>
         <property name="initialPoolSize" value="5" />
