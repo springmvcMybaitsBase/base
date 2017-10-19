@@ -1,8 +1,10 @@
 package com.mana.threadDeam.proandreduce;
 
+import java.util.concurrent.locks.Lock;
+
 public class MainDemo {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) {      
 		StockDemo stock = new StockDemo(100, 30);
 		ReduceDemo r1 = new ReduceDemo("r1",stock,30);
 		ReduceDemo r2 = new ReduceDemo("r2",stock,40);

@@ -15,7 +15,7 @@ public class ProductDemo extends Thread{
 		this.stock = stock;
 		this.needNum = needNum;
 	}
-	
+	  
 	public void run(){
 		stock.addNum(needNum);
 	}
