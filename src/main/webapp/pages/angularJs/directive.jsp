@@ -16,7 +16,7 @@
 </head>
 <body ng-app='myApp' > 
 	<!-- directive example -->
-	<!-- anjular 设置时间触发器 -->
+	<!-- anjular 设置时间触发器 ：自定义指令-->
 	<div ng-controller="myController">
 		<my-clock></my-clock>
 		
